@@ -4,26 +4,22 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+MainWindow::MainWindow() :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    cl=new Client("127.0.0.1",1234);
-    connect(ui->submitbtn,SIGNAL(clicked(bool)),this,SLOT(onbtnClicked()));
-    connect(ui->filebt, SIGNAL(clicked(bool)),this, SLOT(onfilebtnClicked()));
 }
 
 
 void MainWindow::onbtnClicked(){
     if (!fileIsChosen){
-       cl->sendToServer(ui->textEdit->toPlainText());
+       //cl->sendToServer(ui->textEdit->toPlainText());
     } else{
         QFile data(nameOfFile);
        if (data.open(QFile::ReadOnly)) {
            QTextStream in(&data);
            QString value=in.readAll();
-           cl->sendToServer(value);
+           //cl->sendToServer(value);
        }
     }
 }
