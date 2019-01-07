@@ -2,6 +2,7 @@
 #define SPROBLEMSET_H
 
 #include "serverpacket.h"
+#include "../../shared/problementry.h"
 #include <QMap>
 
 class SProblemSet : public ServerPacket
@@ -15,22 +16,12 @@ public:
 #endif
 
 #ifdef SERVER
-    SProblemSet(QList<ProblemEntry*> problemset);
+    SProblemSet(const QList<ProblemEntry*>& problemset);
     QByteArray Serialize();
 #endif
 
 private:
-    qint32 _waitingTime;
-    qint32 _contestDuration;
-    qint32 _numberOfProblems;
-
-#ifdef CLIENT
-    QMap<qint32, QString> _contestants;
-#endif
-
-#ifdef SERVER
-    QList<ProblemEntry*> _problemset;
-#endif
+    QList<ProblemEntry*> m_problemset;
 };
 
 #endif // SPROBLEMSET_H
