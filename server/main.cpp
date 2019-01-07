@@ -7,7 +7,7 @@ int main( int argc, char** argv )
 {
     QCoreApplication a( argc, argv );
 
-    if (!ProblemSetManager::Init("problems"))
+    if (!ProblemSetManager::Init("../problems"))
     {
         exit(EXIT_FAILURE);
     }
