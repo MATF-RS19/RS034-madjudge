@@ -1,0 +1,21 @@
+-------------------------------------------------------------
+
+Description: Print the first n fibonacci numbers.
+
+-------------------------------------------------------------
+
+Input: In the only line of input you will be given number n. (n < 50)
+
+-------------------------------------------------------------
+
+Output: First n numbers of the fibonacci sequence, separated by a single space.
+
+-------------------------------------------------------------
+
+Examples: 
+
+Input: 1
+Output: 1 
+
+Input: 6
+Output: 1 1 2 3 5 8

@@ -1,0 +1,21 @@
+-------------------------------------------------------------
+
+Description: Print all the divisors of the given number in ascending order.
+
+-------------------------------------------------------------
+
+Input: In the only line of input you will be given number n. (n < 10000)
+
+-------------------------------------------------------------
+
+Output: Divisors of the number n, in ascending order, separated by a single space.
+
+-------------------------------------------------------------
+
+Examples: 
+
+Input: 2
+Output: 1 2
+
+Input: 9322
+Output: 1 2 59 79 118 158 4661 9322

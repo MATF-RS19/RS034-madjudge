@@ -1,0 +1,21 @@
+-------------------------------------------------------------
+
+Description: You are given a set of n differently colored balls, and you are tasked with picking k of them. In how many ways can you do that?
+
+-------------------------------------------------------------
+
+Input: In the only line of input you will be two numbers separated by a single space. The first one will be n and the second one will be k. (1 < k < n < 30)
+
+-------------------------------------------------------------
+
+Output: Number of different ways you can choose k balls from a set which contains n of them.
+
+-------------------------------------------------------------
+
+Examples: 
+
+Input: 6 3
+Output: 20
+
+Input: 30 10
+Output: 30045015

@@ -1,0 +1,21 @@
+-------------------------------------------------------------
+
+Description: You are given two integers, a and b. Print a^b mod (10^9 + 7).
+
+-------------------------------------------------------------
+
+Input: In the only line of input you will be two integers separated by a single space. The first one will be a and the second one will be b. (0 < a < 3000, 0 < b < 35)
+
+-------------------------------------------------------------
+
+Output: A single integer, a^b mod (10^9 + 7).
+
+-------------------------------------------------------------
+
+Examples: 
+
+Input: 9 3
+Output: 729
+
+Input: 2939 32
+Output: 638857163
