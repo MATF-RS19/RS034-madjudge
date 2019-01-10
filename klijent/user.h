@@ -92,7 +92,7 @@ signals:                                                //signali se isključivo
 
     //u vezi sa rešenjem zadatka
     void SolutionStatusUpdated(const QString& message); //status trenutno poslatog rešenja je ažuriran, treba da se prikaže poruka
-    void GotSolutionResult(const QString& message);     //primio rezultat poslatog rešenja, treba da se prikaže poruka (trenutno samo poruka, možda možemo više informacija kasnije..., poeni će se nezavisno ažurirati)
+    void GotSolutionResult(const QString& message);     //ovo ne znam da li da koristimo jos uvek//primio rezultat poslatog rešenja, treba da se prikaže poruka (trenutno samo poruka, možda možemo više informacija kasnije..., poeni će se nezavisno ažurirati)
 
 private:
     explicit User();

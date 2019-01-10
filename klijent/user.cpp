@@ -212,7 +212,7 @@ void User::ConfirmLogin()
     if (SwitchContext(PromptName, Menu))
     {
         qDebug() << "Logged in successfully with name" << m_username;
-        ContestApply();
+        //ContestApply();                                               //testiranje pre interfejsa
         emit LoggedIn();
     }
 }
@@ -260,7 +260,7 @@ void User::OnConnected()
         m_keepAliveTimer.start();
         KeepAlive(time(nullptr));
         emit Connected();
-        Login("Milos");
+        //Login("Milos");                   //ovo je bilo testiranje pre interfejsa
     }
 }
 
@@ -272,7 +272,9 @@ void User::OnDataReceived(const QByteArray& data)
 void User::OnError()
 {
     m_context = EUserContext::Unconnected;
-    Reconnect();
+    emit Error("Error in connection with server.");
+
+    //Reconnect();                                              //posle uraditi da moze da se izadje programa
 }
 
 void User::OnKeepAliveUpdate()

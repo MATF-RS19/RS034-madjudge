@@ -2,7 +2,7 @@
 #define SPROBLEMSET_H
 
 #include "serverpacket.h"
-#include "../../shared/problementry.h"
+#include "../../problementry.h"
 #include <QMap>
 
 class SProblemSet : public ServerPacket

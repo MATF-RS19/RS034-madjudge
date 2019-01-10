@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>465</width>
-    <height>363</height>
+    <width>903</width>
+    <height>666</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,19 +16,22 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="1" column="0">
-     <widget class="QTextEdit" name="textEdit"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>TextLabel</string>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="submitbtn">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="text">
-       <string>SUBMIT</string>
+       <string>TextLabel</string>
       </property>
      </widget>
     </item>
@@ -46,6 +49,16 @@
       </property>
      </widget>
     </item>
+    <item row="6" column="0">
+     <widget class="QPushButton" name="submitbtn">
+      <property name="text">
+       <string>SUBMIT</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="3">
+     <widget class="QLineEdit" name="lineEdit"/>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -53,7 +66,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>465</width>
+     <width>903</width>
      <height>25</height>
     </rect>
    </property>

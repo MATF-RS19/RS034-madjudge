@@ -1,4 +1,4 @@
-#include "cProblemSolution.h"
+#include "cproblemsolution.h"
 
 #ifdef SERVER
 #include "contestant.h"

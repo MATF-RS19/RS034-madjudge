@@ -4,10 +4,15 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QMessageBox>
 MainWindow::MainWindow() :
     ui(new Ui::MainWindow)
 {
+    m_user = User::Get();
     ui->setupUi(this);
+
+    connect(m_user, SIGNAL(Error(const QString&)), this, SLOT(OnUserError(const QString&)));
+    //connect(user, SIGNAL(Connected()), this, SLOT(OnUserConnected()));
 }
 
 
@@ -34,6 +39,11 @@ void MainWindow::onfilebtnClicked(){
         ui->label_2->setText(fileName);
         fileIsChosen=true;
     }
+}
+
+void MainWindow::OnUserError(const QString& error)
+{
+    QMessageBox::information(this, "Error", error);
 }
 
 MainWindow::~MainWindow()

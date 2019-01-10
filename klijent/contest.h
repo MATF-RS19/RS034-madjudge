@@ -27,6 +27,7 @@ public:
     qint32 GetWaitingTime() const;
     qint32 GetContestDuration() const;
     qint32 GetNumberOfProblems() const;
+    QMap<qint32, QString> GetContestants() const;
 
     QList<ProblemEntry*> GetProblemset() const;
     void SetProblemset(const QList<ProblemEntry*>& problemset);

@@ -31,6 +31,16 @@ qint32 Contest::GetNumberOfProblems() const
     return m_numberOfProblems;
 }
 
+QMap<qint32, QString> Contest::GetContestants() const
+{
+    QMap<qint32, QString> returnMap;
+    for (auto contestantKVP = m_contestants.cbegin(); contestantKVP != m_contestants.cend(); contestantKVP++)
+    {
+        returnMap.insert(contestantKVP.key(), contestantKVP.value().m_name);
+    }
+    return returnMap;
+}
+
 QList<ProblemEntry *> Contest::GetProblemset() const
 {
     return m_problemset.values();
