@@ -36,10 +36,17 @@ To run the client, you'll need to include required qt libraries in its folder. O
 ### Authors
 
 **M**iloš Ivanović
+
 **A**leksa Jovanović
+
 **D**jordje Jovanović
+
 **J**elena Marković
+
 **U**
+
 **D**
+
 **G**
+
 **E**
