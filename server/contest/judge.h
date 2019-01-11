@@ -16,6 +16,74 @@
 #define MAX(a,b) (((a)>(b))?(a):(b))
 using namespace std;
 
+namespace judge{
+  int WA=0;
+  int AC=1;
+  int CO=2;
+  int RE_ABORT=3;
+};
+
+int compare_until_nonspace(int &c1, int &c2, FILE* &f1, FILE* &f2, int &ret){
+   while ((isspace(c1))||(isspace(c2))){
+    // printf("c1=%c, c2=%c\n",c1,c2);
+      if (c1!=c2){
+         if (c2=='\r' && c1=='\n'){
+           c2=fgetc(f2);
+           if (c1!=c2)
+              ret=judge::WA;
+          } else
+              ret=judge::WA;
+      }
+      if (isspace(c1))
+         c1=fgetc(f1);
+      if (isspace(c2))
+         c2=fgetc(f2);
+   }
+}
+
+
+int compare_f(const char* file1, const char* file2){
+   int ret=judge::AC;
+   int c1, c2;
+   FILE* f1=fopen(file1,"r");
+   FILE* f2=fopen(file2,"r");
+   if (f1==NULL){
+      printf("Korisnicki fajl ne postoji");
+      ret = judge::CO;
+   }
+   if (!f1 || !f2){
+     ret=judge::RE_ABORT;
+   } else {
+        c1=fgetc(f1); //printf("c1=%c\n",c1);
+        c2=fgetc(f2); //printf("c2=%c\n",c2);
+        while (1){
+           printf("c1=%c, c2=%c\n",c1,c2);
+           compare_until_nonspace(c1,c2,f1,f2,ret);  
+         //  printf("cuns%d",ret);
+           //printf("ret=%d",ret);
+           while (!isspace(c1) || !isspace(c2)){
+              if (c1==EOF && c2==EOF)
+                goto end;
+              if (c1!=c2){
+                 printf("c1=%c, c2=%c\n",c1,c2);
+                 ret=judge::WA;
+                 goto end;
+              }
+              c1=fgetc(f1);
+              c2=fgetc(f2);
+           }
+        }
+   }
+   end:
+       if (f1) fclose(f1);
+       if (f2) fclose(f2);
+       return ret;
+}
+
+int compare_files(const char* file1, const char* file2){
+  return compare_f(file1,file2);
+}
+
 void set_limit(int time_limit)
 {
     rlimit lim;
@@ -150,6 +218,10 @@ void Judger(std::string &dir_path, int id, int memory_limit, int time_limit, int
 
                    pid_t userexe;
                    int status=0;
+                   std::string file=dir_path+"/temp/"+std::to_string(id);
+                   std::string program_input=pomocni_path+"/"+nametmp+".in";
+                   std::string program_output_std=pomocni_path+"/"+nametmp+".out";
+                   std::string program_output=dir_path+"/temp/"+std::to_string(id)+".out";
                    struct rusage rused;
                    if ((userexe=fork())<0){
                         perror("fork error");
@@ -157,14 +229,15 @@ void Judger(std::string &dir_path, int id, int memory_limit, int time_limit, int
                        return;
                    } else if (userexe==0){ //child
                        printf("u child-u sam");
-                       std::string file=dir_path+"/temp/"+std::to_string(id);
+                      // std::string file=dir_path+"/temp/"+std::to_string(id);
                        printf("file:%s\n",file.c_str());
-                       std::string program_input=pomocni_path+"/"+nametmp+".in";
+                      // std::string program_input=pomocni_path+"/"+nametmp+".in";
                        printf("ulaz je: %s",program_input.c_str());
                        freopen(program_input.c_str(),"r",stdin);
-                       std::string program_output_std=pomocni_path+"/"+nametmp+".out";
-                       std::string program_output=dir_path+"/temp/"+std::to_string(id)+".out";
+                      // std::string program_output_std=pomocni_path+"/"+nametmp+".out";
+                      // std::string program_output=dir_path+"/temp/"+std::to_string(id)+".out";
                        //kreirati ovaj fajl
+                       printf("izlaz je %s, a izlaz programa %s\n",program_output_std.c_str(), program_output.c_str());
                        freopen(program_output.c_str(),"w",stdout);
                       alarm(time_limit);
                        set_limit(time_limit);
@@ -183,6 +256,10 @@ while(1){
                       }
                       if (WIFEXITED(status)){
                         printf("i did it!\n");
+                       // printf("status of compare: %d\n",compare_files(program_output_std.c_str(), program_output.c_str()));
+                        if (compare_files(program_output.c_str(), program_output_std.c_str())!=1){
+                             printf("Wrong answer\n");
+                        } else printf("Accepted solution\n");
                        /* printf("%d kB",get_memory_usage(userexe));
                                 memory_used = MAX(memory_used, get_memory_usage(userexe));
                                 if (memory_used > memory_limit){
