@@ -1,6 +1,8 @@
 #include "solutionmanager.h"
 #include <QtConcurrent/QtConcurrent>
-
+#include "judger.h"
+#include "contestant.h"
+using namespace judge;
 SolutionManager* SolutionManager::h_Inst = nullptr;
 
 void SolutionManager::Init()
@@ -37,11 +39,36 @@ void SolutionManager::InternalCheckSolution(const QString &text, Contestant *con
     //text = fajl koji treba da se prevede sa g++
     //contestant = korisnik čije rešenje proveravamo
     //entry = problem koji se rešava
-
+    QString TestCasesDir = entry->GetTestcasesDir();
+    QString pathFile = TestCasesDir + "/temp/"+ QString::number(contestant->GetID())+".c";
+    QFile qFile(pathFile);
+    if (qFile.open(QIODevice::WriteOnly)) {
+       QTextStream out(&qFile); out << text;
+       qFile.close();
+    }
     emit SolutionStatusUpdated(contestant, ProblemEntry::InQueue);
+    emit SolutionStatusUpdated(contestant,ProblemEntry::Compiling);
+    if (compiler(TestCasesDir,1,contestant->GetID())!=0){
+        emit SolutionStatusUpdated(contestant,ProblemEntry::CompilationError);
+    } else{
+        emit SolutionStatusUpdated(contestant,ProblemEntry::Running);
+        int result=Judger(TestCasesDir,contestant->GetID(),entry->GetMemoryLimit(),entry->GetTimeLimit());
+        switch(result){
+             case 0:
+                 emit SolutionStatusUpdated(contestant,ProblemEntry::Solved);
+                 break;
+             case 1:
+                 emit SolutionStatusUpdated(contestant, ProblemEntry::WrongAnswer);
+                 break;
+             case 2:
+                 emit SolutionStatusUpdated(contestant, ProblemEntry::TimeLimitExceeded);
+                 break;
+             case 3:
+                 emit SolutionStatusUpdated(contestant,ProblemEntry::MemoryLimitExceeded);
+                 break;
 
-    //kompilacija...
-    emit SolutionStatusUpdated(contestant, ProblemEntry::Compiling);
+        }
+     }
 
     //treba proveriti da li je uspela kompilacija, ako jeste onda idemo Running, inače CompilationError i završimo
     //ako je uspela, onda proveravamo svaki test primer input/output, testcases mogu da se dobiju u entry->GetTestcasesDir();

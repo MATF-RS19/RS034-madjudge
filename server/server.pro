@@ -72,5 +72,6 @@ HEADERS += \
     ../shared/packet/server/suserleavecontest.h \
     ../shared/packet/server/scontestfinished.h \
     contest/solutionmanager.h \
-    contest/judge.h
+    contest/judge.h \
+    contest/judger.h
 
