@@ -13,7 +13,7 @@ MainWindow::MainWindow() :
 
     connect(m_user, SIGNAL(Error(const QString&)), this, SLOT(OnUserError(const QString&)));
     //connect(user, SIGNAL(Connected()), this, SLOT(OnUserConnected()));
-    connect(User::Get(),SIGNAL(LoggedIn()),this,SLOT(show()));
+    connect(m_user,SIGNAL(AppliedForContest()),this,SLOT(show()));
 }
 
 

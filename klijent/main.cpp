@@ -2,6 +2,7 @@
 #include <QApplication>
 #include "user.h"
 #include "popuplogin.h"
+#include "popupchoice.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +10,8 @@ int main(int argc, char *argv[])
     User::Init();
     PopupLogin pl;
     pl.show();
+
+    PopupChoice pc;
 
     MainWindow w;
 
