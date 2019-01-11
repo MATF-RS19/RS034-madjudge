@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include "user.h"
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
@@ -13,6 +13,7 @@ MainWindow::MainWindow() :
 
     connect(m_user, SIGNAL(Error(const QString&)), this, SLOT(OnUserError(const QString&)));
     //connect(user, SIGNAL(Connected()), this, SLOT(OnUserConnected()));
+    connect(User::Get(),SIGNAL(LoggedIn()),this,SLOT(show()));
 }
 
 

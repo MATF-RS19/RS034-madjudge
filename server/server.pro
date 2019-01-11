@@ -5,7 +5,7 @@ QT += network
 
 
 TARGET = server
-CONFIG += c++17 console
+CONFIG += c++11 console
 CONFIG += console
 CONFIG -= app_bundle
 

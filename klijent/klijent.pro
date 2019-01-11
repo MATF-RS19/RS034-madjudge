@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     contest.cpp \
     ../shared/packet/server/supdateuserscore.cpp \
     ../shared/packet/server/suserleavecontest.cpp \
-    ../shared/packet/server/scontestfinished.cpp
+    ../shared/packet/server/scontestfinished.cpp \
+    popuplogin.cpp
 
 HEADERS  += mainwindow.h \
     ../shared/client.h \
@@ -66,6 +67,12 @@ HEADERS  += mainwindow.h \
     contest.h \
     ../shared/packet/server/supdateuserscore.h \
     ../shared/packet/server/suserleavecontest.h \
-    ../shared/packet/server/scontestfinished.h
+    ../shared/packet/server/scontestfinished.h \
+    popuplogin.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    popuplogin.ui
+
+DISTFILES += \
+    PopupLoginForm.ui.qml \
+    PopupLogin.qml
