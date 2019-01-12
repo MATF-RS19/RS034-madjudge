@@ -232,8 +232,8 @@ int Judger(QString &dir_path, qint32 id, qint32 memory_limit, qint32 time_limit)
 
                    freopen(pi_b.data(),"r",stdin);
                    freopen(po_b.data(),"w",stdout);
-                   alarm(time_limit);
-                   set_limit(time_limit,memory_limit);
+                   alarm(time_limit / 1000 + 1);
+                   set_limit(time_limit / 1000 + 1,memory_limit);
 
                    execvp(file_b.data(),NULL);
                    } else{
