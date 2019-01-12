@@ -284,6 +284,11 @@
       </disabled>
      </palette>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="frameShape">
      <enum>QFrame::Box</enum>
     </property>
@@ -362,9 +367,9 @@
    <widget class="QLabel" name="problemDescLabel">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>20</x>
       <y>100</y>
-      <width>211</width>
+      <width>311</width>
       <height>41</height>
      </rect>
     </property>
@@ -383,7 +388,7 @@
      <string>Problem Description</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignCenter</set>
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="solutionDescLabel">
@@ -777,10 +782,10 @@
     <widget class="QLabel" name="timeLabel">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>190</x>
        <y>40</y>
-       <width>321</width>
-       <height>31</height>
+       <width>451</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="font">

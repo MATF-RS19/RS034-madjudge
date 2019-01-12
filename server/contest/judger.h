@@ -21,26 +21,34 @@ namespace judge{
    int TLE = 2;
    int MLE = 3;
 };
-int compiler(QString &dir_path, qint32 compile_time_limit,quint32 id){
-   int status = 0;
-   pid_t compiler = fork();
-   if (compiler < 0){
-      qDebug() << "compiler fork error";
-      return -1;
-   } else if (compiler == 0){
-      dir_path+="/temp";
-      qDebug() << "path="<< dir_path;
-      chdir((const char*)dir_path.data());
-      freopen("ce.txt","w",stderr);
-      alarm(compile_time_limit);
-      QString f=QString::number(id)+".c";
-      QString f_out=QString::number(id);//+".out";
-      char* arg_list[]={"gcc",(char*)f.data(),"-o",(char*)f_out.data(),"-Wall",NULL};
-      execvp(arg_list[0],(char* const*)arg_list);
-   } else{
-       waitpid(compiler,&status,0);
-       return status;
-   }
+int compiler(QString dir_path, qint32 compile_time_limit,quint32 id){
+    int status = 0;
+     pid_t compiler = fork();
+     if (compiler < 0){
+        qDebug()<<"compiler fork error...";
+        return -1;
+     } else if (compiler == 0){
+        dir_path+="/temp";
+        qDebug()<<"path="<<dir_path;
+       // chdir(dir_path.toLocal8Bit().data());
+      //  char buffer[1024];
+       // char *hello=getcwd(buffer, 1024);
+        //qDebug()<<"curdur"<<hello;
+
+       // freopen("ce.txt","w",stderr);
+       // alarm(compile_time_limit);
+        QString f=dir_path+"/"+QString::number(id)+".c";
+        QString f_out=dir_path+"/"+QString::number(id)+".x";//+".out";
+        qDebug() << "f=" << f << " f_out=" << f_out;
+       // printf("%s %s\n",f,f_out);
+        QByteArray fb=f.toLocal8Bit();
+        QByteArray f_outb=f_out.toLocal8Bit();
+        char* arg_list[]={"gcc","-o",f_outb.data(),fb.data(),"-Wall",NULL};
+        execvp(arg_list[0],(char* const*)arg_list);
+     } else{
+         waitpid(compiler,&status,0);
+         return status;
+     }
 }
 
 
@@ -79,7 +87,7 @@ bool isInFile(char *filename)
     return true;
 }
 
-void set_limit(int time_limit)
+void set_limit(qint32 time_limit,qint32 memory_limit)
 {
     rlimit lim;
     lim.rlim_cur = (time_limit + 999)/1000 + 1;
@@ -99,7 +107,7 @@ void set_limit(int time_limit)
     }*/
 
     getrlimit(RLIMIT_STACK, &lim);
-    unsigned rlim = 32992;
+ /*   unsigned rlim = memory_limit;
     if (lim.rlim_max <= rlim)
     {
         qDebug()<<"can't set steck size to higher";
@@ -113,7 +121,7 @@ void set_limit(int time_limit)
             qDebug()<<"setrlimit error";
             return;
         }
-    }
+    }*/
     lim.rlim_max = 1024;
     lim.rlim_cur = lim.rlim_max;
     if (setrlimit(RLIMIT_FSIZE, &lim) < 0)
@@ -149,7 +157,7 @@ int compare_f(const char* file1, const char* file2){
    FILE* f1=fopen(file1,"r");
    FILE* f2=fopen(file2,"r");
    if (f1==NULL){
-      printf("Korisnicki fajl ne postoji");
+      qDebug()<<"Korisnicki fajl ne postoji";
       ret = -1;
    }
    if (!f1 || !f2){
@@ -158,13 +166,13 @@ int compare_f(const char* file1, const char* file2){
         c1=fgetc(f1);
         c2=fgetc(f2);
         while (1){
-           qDebug()<<"c1="<<c1<<"c2="<<c2;
+         //  qDebug()<<"c1="<<c1<<"c2="<<c2;
            compare_until_nonspace(c1,c2,f1,f2,ret);
            while (!isspace(c1) || !isspace(c2)){
               if (c1==EOF && c2==EOF)
                 goto end;
               if (c1!=c2){
-                 qDebug()<<"c1="<<c1<<"c2="<<c2;
+                 //qDebug()<<"c1="<<c1<<"c2="<<c2;
                  ret=judge::WA;
                  goto end;
               }
@@ -187,7 +195,8 @@ int Judger(QString &dir_path, qint32 id, qint32 memory_limit, qint32 time_limit)
             DIR *dp;
             struct dirent* dirp;
           //  int programState = judge::AC;
-            dp=opendir((const char*)dir_path.data());
+            QByteArray dp_b=dir_path.toLocal8Bit();
+            dp=opendir(dp_b.data());
             if (dp==NULL){
                  qDebug() << "opendir error";
                  return -1;
@@ -205,8 +214,13 @@ int Judger(QString &dir_path, qint32 id, qint32 memory_limit, qint32 time_limit)
                    int status=0;
                    QString file=dir_path+"/temp/"+QString::number(id);
                    QString program_input=dir_path+"/"+nametmp+".in";
-                   QString program_output_std=dir_path+"/"+nametmp+".out";
+                   QString program_output_std=dir_path+"/"+nametmp+".oout";
                    QString program_output=dir_path+"/temp/"+QString::number(id)+".out";
+
+                   QByteArray pi_b= program_input.toLocal8Bit();
+                   QByteArray po_b=program_output.toLocal8Bit();
+                   QByteArray file_b=file.toLocal8Bit();
+                   QByteArray pos_b=program_output_std.toLocal8Bit();
                    struct rusage rused;
                    if ((userexe=fork())<0){
                         qDebug()<<"fork error";
@@ -215,11 +229,13 @@ int Judger(QString &dir_path, qint32 id, qint32 memory_limit, qint32 time_limit)
                        qDebug()<<"u child-u smo";
                     //   printf("file:%s\n",file.c_str());
                       // printf("ulaz je: %s",program_input.c_str());
-                   freopen((const char*)program_input.data(),"r",stdin);
-                   freopen((const char*)program_output.data(),"w",stdout);
+
+                   freopen(pi_b.data(),"r",stdin);
+                   freopen(po_b.data(),"w",stdout);
                    alarm(time_limit);
-                   set_limit(time_limit);
-                   execvp((const char*)file.data(),NULL);
+                   set_limit(time_limit,memory_limit);
+
+                   execvp(file_b.data(),NULL);
                    } else{
                    qint32 memory_used=128;
 while(1){
@@ -231,9 +247,9 @@ while(1){
                       if (WIFEXITED(status)){
                         qDebug()<<"i did it!";
 
-                        if (compare_files((const char*)program_output.data(),
-                                           (const char*) program_output_std.data())!=1){
-                           return judge::WA;
+                        if (compare_files(po_b.data(),
+                                           pos_b.data())==1){
+                           return judge::AC;
                         }
                        /* printf("%d kB",get_memory_usage(userexe));
                                 memory_used = MAX(memory_used, get_memory_usage(userexe));
@@ -265,6 +281,7 @@ while(1){
                                             return judge::MLE;
                                          case SIGSEGV:
                                             qDebug()<<"segmentation fault";
+                                            return judge::MLE;
                                          default:
                                             qDebug()<<"something else...";
                                             return -1;
@@ -289,7 +306,7 @@ while(1){
                 }
             }}
            closedir(dp);
-           return judge::AC;
+           return judge::WA;
 }
 
 #endif // JUDGER_H

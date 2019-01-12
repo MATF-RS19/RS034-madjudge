@@ -29,7 +29,8 @@ SolutionManager *SolutionManager::Get()
 
 void SolutionManager::CheckSolution(const QString &text, Contestant *contestant, ProblemEntry *entry)
 {
-    QtConcurrent::run(this, &SolutionManager::InternalCheckSolution, text, contestant, entry);
+    //QtConcurrent::run(this, &SolutionManager::InternalCheckSolution, text, contestant, entry);
+    SolutionManager::InternalCheckSolution(text, contestant, entry);
 }
 
 void SolutionManager::InternalCheckSolution(const QString &text, Contestant *contestant, ProblemEntry *entry)
@@ -49,8 +50,10 @@ void SolutionManager::InternalCheckSolution(const QString &text, Contestant *con
     emit SolutionStatusUpdated(contestant, ProblemEntry::InQueue);
     emit SolutionStatusUpdated(contestant,ProblemEntry::Compiling);
     if (compiler(TestCasesDir,1,contestant->GetID())!=0){
+        qDebug()<<"compilation error";
         emit SolutionStatusUpdated(contestant,ProblemEntry::CompilationError);
     } else{
+        qDebug()<<"uspelo je";
         emit SolutionStatusUpdated(contestant,ProblemEntry::Running);
         int result=Judger(TestCasesDir,contestant->GetID(),entry->GetMemoryLimit(),entry->GetTimeLimit());
         switch(result){
