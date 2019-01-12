@@ -41,6 +41,16 @@ QMap<qint32, QString> Contest::GetContestants() const
     return returnMap;
 }
 
+QMap<qint32, QString> Contest::GetContestantScores() const
+{
+    QMap<qint32, QString> returnMap;
+    for (auto pInfo : m_contestants)
+    {
+        returnMap.insert(pInfo.m_score, pInfo.m_name);
+    }
+    return returnMap;
+}
+
 QList<ProblemEntry *> Contest::GetProblemset() const
 {
     return m_problemset.values();

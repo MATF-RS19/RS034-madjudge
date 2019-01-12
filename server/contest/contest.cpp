@@ -10,7 +10,7 @@
 #include "../shared/packet/server/scontestfinished.h"
 #include "../shared/packet/packet.h"
 
-Contest::Contest(QSet<Contestant *> contestants) : m_waitingTime(10000), m_contestDuration(3600000), m_numberOfProblems(1)
+Contest::Contest(QSet<Contestant *> contestants) : m_waitingTime(10000), m_contestDuration(3600000), m_numberOfProblems(3)
 {
     qDebug() << "New contest, contestants:";
     for (const auto& contestant : contestants)
@@ -26,7 +26,7 @@ Contest::Contest(QSet<Contestant *> contestants) : m_waitingTime(10000), m_conte
 
 Contest::~Contest()
 {
-    disconnect(&m_contestTimer, SIGNAL(timeout()), this, SLOT(OnPhaseFinished()));
+    qDebug() << "Contest deleted";
 }
 
 void Contest::Start()
@@ -65,19 +65,23 @@ void Contest::KickUser(Contestant *contestant)
     }
     if (m_contestants.size() == 0)
     {
+        qDebug() << "All contestants left, finish contest";
         m_contestTimer.stop();
         m_currentPhase = EContestPhase::Finished;
         emit ContestFinished();
     }
 }
 
-void Contest::UpdateScore(Contestant *contestant, qint32 score)
+void Contest::UpdateScore(Contestant *contestant, qint32 problemId)
 {
     if (m_currentPhase == EContestPhase::InProgress)
     {
-        m_contestants[contestant] += score;
-        SUpdateUserScore* updateScorePacket = new SUpdateUserScore(contestant->GetID(), m_contestants[contestant]);
-        SendToAll(updateScorePacket);
+        if (contestant->CanUpdateScore(problemId))
+        {
+            m_contestants[contestant] += 1;
+            SUpdateUserScore* updateScorePacket = new SUpdateUserScore(contestant->GetID(), m_contestants[contestant]);
+            SendToAll(updateScorePacket);
+        }
     }
 }
 
@@ -109,11 +113,19 @@ void Contest::OnPhaseFinished()
     {
     case EContestPhase::Idle:
         Start();
+        for (auto contestant : m_contestants.keys())
+        {
+            contestant->SetContest(this);
+        }
         nextInterval = m_waitingTime;
         nextPhase = EContestPhase::Waiting;
         break;
     case EContestPhase::Waiting:
         GenerateProblemset();
+        for (auto contestant : m_contestants.keys())
+        {
+            contestant->StartContest();
+        }
         nextInterval = m_contestDuration;
         nextPhase = EContestPhase::InProgress;
         break;

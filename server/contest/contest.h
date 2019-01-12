@@ -33,7 +33,7 @@ public:
     void GenerateProblemset();                                  //generiše problemset i šalje ga svim takmičarima
 
     void KickUser(Contestant* contestant);                      //izbacuje takmičara sa takmičenja i šalje informaciju o tome
-    void UpdateScore(Contestant* contestant, qint32 score);     //dodeljuje poene takmičaru i šalje informacije o tome svim takmičarima
+    void UpdateScore(Contestant* contestant, qint32 problemId);     //dodeljuje poene takmičaru i šalje informacije o tome svim takmičarima
     void FinishContest();                                       //šalje informaciju da je takmičenje završeno
 
     ProblemEntry* GetProblem(qint32 ID) const;                  //uzima zadatak sa odgovarajućim ID

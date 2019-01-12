@@ -8,7 +8,7 @@ class ProblemEntry
 {
 public:
 
-    enum ESolutionStatus
+    enum ESolutionStatus                                                //self-explanatory
     {
         InQueue,
         Compiling,
@@ -28,6 +28,7 @@ public:
     ProblemEntry(qint32 ID, qint32 timeLimitMs, qint32 memoryLimitMb, const QString& description);
 #endif
 
+    //getteri
     qint32 GetID() const;
     qint32 GetTimeLimit() const;
     qint32 GetMemoryLimit() const;
@@ -35,20 +36,20 @@ public:
 
 #ifdef SERVER
     const QString& GetTestcasesDir() const;
-    bool LoadProblemDescription();
+    bool LoadProblemDescription();                                          //učitava opis problema iz fajla na koji pokazuje m_filePath
 #endif
 
 private:
-    qint32 m_ID;
+    qint32 m_ID;                                                            //ID problema
 
 #ifdef SERVER
-    QString m_filePath;
-    QString m_testCasesPath;
+    QString m_filePath;                                                     //put do fajla gde se nalazi opis problema
+    QString m_testCasesPath;                                                //put do foldera gde se nalaze test primeri za ovaj problem
 #endif
 
-    qint32 m_timeLimitMs;
-    qint32 m_memoryLimitMb;
-    QString m_description;
+    qint32 m_timeLimitMs;                                                   //vremensko ograničenje za ovaj problem
+    qint32 m_memoryLimitMb;                                                 //memorijsko ograničenje za ovaj problem
+    QString m_description;                                                  //opis ovog problema (biće postavljen tek nakon poziva LoadProblemDescription())
 };
 
 #endif // PROBLEM_H

@@ -8,16 +8,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     User::Init();
-    PopupLogin pl;
-    pl.show();
+    PopupLogin* pl = new PopupLogin();
+    pl->show();
 
     PopupChoice pc;
 
     MainWindow w;
 
    // w.show();
-
-    User::Get()->Connect();
 
     return a.exec();
 }

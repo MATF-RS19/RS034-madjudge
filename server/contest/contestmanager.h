@@ -36,7 +36,7 @@ private slots:
     void OnUserDisconnected();                              //kad se veza sa korisnikom prekine
 
     void OnContestFinished();                               //kad se takmičenje završi
-    void OnUserSolutionUpdated(Contestant* contestant, ProblemEntry::ESolutionStatus status);                           //status rešenja nekog takmičara se ažurira
+    void OnUserSolutionUpdated(Contestant* contestant, const ProblemEntry::ESolutionStatus status);                           //status rešenja nekog takmičara se ažurira
 
 private:
     ContestManager();

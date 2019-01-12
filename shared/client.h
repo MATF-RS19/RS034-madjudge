@@ -27,25 +27,25 @@ public:
 
     ~Client();
 
-    void Connect();
-    void Send(const QByteArray &data);
-    void Disconnect();
+    void Connect();                                                                     //povezuje se sa serverom
+    void Send(const QByteArray &data);                                                  //šalje podatke koji se nalaze u data
+    void Disconnect();                                                                  //prekida konekciju sa serverom
 
 private slots:
-    void OnReadyRead();
-    void OnError(QAbstractSocket::SocketError error);
+    void OnReadyRead();                                                                 //spreman za čitanje podataka koje je poslao server
+    void OnError(QAbstractSocket::SocketError error);                                   //desila se greška u vezi sa serverom
 
 signals:
-    void Connected();
-    void DataReceived(QByteArray data);
-    void Disconnected();
-    void Error();
+    void Connected();                                                                   //povezao se sa serverom
+    void DataReceived(QByteArray data);                                                 //primio podatke od servera
+    void Disconnected();                                                                //veza se prekinula
+    void Error();                                                                       //desila se greška u vezi
 
 private:
 
-    QHostAddress m_host;
-    quint16 m_port;
-    QTcpSocket* m_socket;
+    QHostAddress m_host;                                                                //IP adresa servera
+    quint16 m_port;                                                                     //port servera
+    QTcpSocket* m_socket;                                                               //soket koji se koristi za povezivanje sa serverom
 };
 
 #endif // CLIENT_H

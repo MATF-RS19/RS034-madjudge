@@ -47,7 +47,10 @@ public:
     void Disconnect();                                  //prekida vezu između korisnika i servera
 
     void SetContest(Contest* contest);                  //postavlja takmičenje kojem takmičara pripada
+    void StartContest();                                //daje takmičaru do znanja da mu je počelo takmičenje
     void FinishContest();                               //završava takmičenje u kojem je trenutno takmičar
+
+    bool CanUpdateScore(qint32 problemId);              //proverava da li je korisnik već rešio ovaj problem
 
     void SendPacket(Packet* packet, bool del = true) const;                    //šalje paket korisniku
 
@@ -74,4 +77,6 @@ private:
     bool m_verifyingSolution;                           //bool koji nam kaže da li korisnik trenutno proverava solution
 
     DataHandler m_dataHandler;                          //data handler za pretvaranje primljenih podataka u pakete
+
+    QSet<qint32> m_solvedProblems;       //problemi koje je korisnik rešio
 };

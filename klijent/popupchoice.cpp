@@ -7,10 +7,10 @@ PopupChoice::PopupChoice(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(User::Get(),SIGNAL(LoggedIn()),this,SLOT(show()));
-    connect(User::Get(),SIGNAL(AppliedForContest()),this,SLOT(close()));
-   // connect(User::Get(),SIGNAL()))
+    connect(User::Get(),SIGNAL(EnteredContest()),this,SLOT(close()));
     connect(ui->BtnSolo,SIGNAL(clicked(bool)),this,SLOT(onBtnSoloClick()));
     connect(ui->BtnContest,SIGNAL(clicked(bool)),this,SLOT(onBtnContestClick()));
+    connect(User::Get(), SIGNAL(AppliedForContest()),this,SLOT(onApplied()));
 }
 
 PopupChoice::~PopupChoice()
@@ -26,4 +26,9 @@ void PopupChoice::onBtnSoloClick()
 void PopupChoice::onBtnContestClick()
 {
     User::Get()->ContestApply();
+}
+
+void PopupChoice::onApplied()
+{
+    ui->LbInfo->setText("Waiting...");
 }

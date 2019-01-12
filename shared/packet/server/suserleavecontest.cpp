@@ -18,7 +18,7 @@ void SUserLeaveContest::Process()
     {
         Contest* contest = user->GetCurrentContest();
         contest->RemoveParticipant(m_userID);
-        emit user->ContestantLeftContest(m_userID);
+        emit user->UpdatedContestants();
     }
 }
 #endif

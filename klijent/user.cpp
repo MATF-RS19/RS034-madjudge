@@ -40,10 +40,6 @@ void User::InitClient()
 void User::ReleaseClient()
 {
     m_keepAliveTimer.stop();
-    disconnect(&m_keepAliveTimer, SIGNAL(timeout()), this, SLOT(OnKeepAliveUpdate()));
-    disconnect(m_netClient, SIGNAL(Connected()), this, SLOT(OnConnected()));
-    disconnect(m_netClient, SIGNAL(Error()), this, SLOT(OnError()));
-    disconnect(m_netClient, SIGNAL(DataReceived(QByteArray)), this, SLOT(OnDataReceived(QByteArray)));
     m_netClient->deleteLater();
     m_netClient = nullptr;
 }
@@ -118,7 +114,7 @@ void User::Reconnect()
 void User::Disconnect()
 {
     ReleaseClient();
-    emit Disconnected();
+    emit Error("Error in connection with server");
 }
 
 Contest *User::GetCurrentContest()
@@ -132,6 +128,7 @@ void User::MakeContest(qint32 waitingTime, qint32 contestDuration, qint32 number
     {
          qDebug() << "Contest info received";
          m_currentContest = new Contest(waitingTime, contestDuration, numberOfProblems, contestants);
+         emit EnteredContest();
          emit GotContestInfo(m_currentContest);
     }
 }
@@ -163,10 +160,9 @@ bool User::IsInContest()
 
 void User::Login(const QString &name)
 {
-    if (VerifyContext(PromptName))
+    if (VerifyContext(Unconnected))
     {
-        CLogin* loginPacket = new CLogin(name);
-        SendPacket(loginPacket);
+        Connect();
         m_username = name;
     }
 }
@@ -202,6 +198,7 @@ void User::LeaveContest()
 {
     if (VerifyContext(InContest))
     {
+        qDebug() << "leave";
         CLeaveContest* leaveContestPacket = new CLeaveContest();
         SendPacket(leaveContestPacket);
     }
@@ -260,7 +257,8 @@ void User::OnConnected()
         m_keepAliveTimer.start();
         KeepAlive(time(nullptr));
         emit Connected();
-        //Login("Milos");                   //ovo je bilo testiranje pre interfejsa
+        CLogin* loginPacket = new CLogin(m_username);
+        SendPacket(loginPacket);
     }
 }
 

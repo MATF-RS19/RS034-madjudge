@@ -147,7 +147,9 @@ void Contestant::LeaveContest()
     {
         if (m_currentContest != nullptr)
         {
+            qDebug() << "User leave contest";
             m_currentContest->KickUser(this);
+            m_currentContest = nullptr;
         }
     }
 }
@@ -159,6 +161,13 @@ void Contestant::UpdateSolutionStatus(ProblemEntry::ESolutionStatus status)
         SProblemSolutionStatus* statusPacket = new SProblemSolutionStatus(status);
         SendPacket(statusPacket);
 
+        if (status == ProblemEntry::ESolutionStatus::Solved)
+        {
+            if (m_currentContest != nullptr)
+            {
+                m_currentContest->UpdateScore(this, 1);
+            }
+        }
         if(status == ProblemEntry::ESolutionStatus::Solved
         || status == ProblemEntry::ESolutionStatus::WrongAnswer
         || status == ProblemEntry::ESolutionStatus::TimeLimitExceeded
@@ -197,10 +206,18 @@ void Contestant::Disconnect()
 
 void Contestant::SetContest(Contest *contest)
 {
-    if (m_context == EUserContext::Menu)
+    if (m_context == EUserContext::InQueue)
     {
         m_currentContest = contest;
         m_context = EUserContext::Waiting;
+    }
+}
+
+void Contestant::StartContest()
+{
+    if (m_context == EUserContext::Waiting)
+    {
+        m_context = EUserContext::InContest;
     }
 }
 
@@ -211,6 +228,16 @@ void Contestant::FinishContest()
         m_context = EUserContext::Menu;
         m_currentContest = nullptr;
     }
+}
+
+bool Contestant::CanUpdateScore(qint32 problemId)
+{
+    if (m_solvedProblems.contains(problemId))
+    {
+        return false;
+    }
+    m_solvedProblems.insert(problemId);
+    return true;
 }
 
 void Contestant::OnKeepAliveTimeout()

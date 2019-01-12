@@ -13,12 +13,13 @@ class PopupChoice : public QWidget
     Q_OBJECT
 
 public:
-    explicit PopupChoice(QWidget *parent = 0);
+    explicit PopupChoice(QWidget *parent = nullptr);
     ~PopupChoice();
 
 private slots:
     void onBtnSoloClick();
     void onBtnContestClick();
+    void onApplied();
 private:
     Ui::PopupChoice *ui;
 };

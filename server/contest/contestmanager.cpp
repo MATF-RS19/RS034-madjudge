@@ -12,7 +12,7 @@ void ContestManager::Init()
         SolutionManager* mgr = SolutionManager::Get();
         if (mgr != nullptr)
         {
-            connect(mgr, SIGNAL(SolutionStatusUpdated(Contestant*, ProblemEntry::ESolutionStatus)), h_Inst, SLOT(OnUserSolutionUpdated(Contestant*, ProblemEntry::ESolutionStatus)));
+            connect(mgr, SIGNAL(SolutionStatusUpdated(Contestant*, const ProblemEntry::ESolutionStatus)), h_Inst, SLOT(OnUserSolutionUpdated(Contestant*, const ProblemEntry::ESolutionStatus)));
         }
     }
 }
@@ -108,7 +108,7 @@ void ContestManager::OnContestFinished()
     DeleteContest(contest);
 }
 
-void ContestManager::OnUserSolutionUpdated(Contestant *contestant, ProblemEntry::ESolutionStatus status)
+void ContestManager::OnUserSolutionUpdated(Contestant *contestant, const ProblemEntry::ESolutionStatus status)
 {
     contestant->UpdateSolutionStatus(status);
 }

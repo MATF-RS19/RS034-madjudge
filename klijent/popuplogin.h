@@ -13,7 +13,7 @@ class PopupLogin : public QWidget
     Q_OBJECT
 
 public:
-    explicit PopupLogin(QWidget *parent = 0);
+    explicit PopupLogin(QWidget *parent = nullptr);
     ~PopupLogin();
 
 private slots:

@@ -3,24 +3,24 @@
 
 #include "serverpacket.h"
 
-class SLeaveRe : public ServerPacket
+class SLeaveContestRe : public ServerPacket
 {
 public:
 
 #ifdef CLIENT
-    SLeaveRe();
+    SLeaveContestRe();
     void Deserialize();
     void Process();
 #endif
 
 #ifdef SERVER
-    SLeaveRe(bool result, const QString& error = "");
+    SLeaveContestRe(bool result, const QString& error = "");
     QByteArray Serialize();
 #endif
 
 private:
-    bool m_result;
-    QString m_error;
+    bool _result;
+    QString _error;
 };
 
 #endif // SLEAVERE_H

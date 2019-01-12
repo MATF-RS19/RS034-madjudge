@@ -19,7 +19,7 @@ void SUpdateUserScore::Process()
     {
         Contest* contest = user->GetCurrentContest();
         contest->UpdateParticipantScore(m_userID, m_userScore);
-        emit user->ContestantScoreUpdated(m_userID, m_userScore);
+        emit user->UpdatedContestants();
     }
 }
 #endif

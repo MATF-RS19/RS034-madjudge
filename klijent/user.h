@@ -87,8 +87,7 @@ signals:                                                //signali se isključivo
     //u vezi sa samim takmičenjem
     void GotContestInfo(Contest* contest);              //primio informacije u vezi takmičenja, u ovom trenutku bi već trebalo da se nalazi u meniju za takmičenje i da popuni informacije na ekranu vezane za takmičenje
     void GotProblemset(QList<ProblemEntry*> problems);  //primio problem set, završava se faza čekanja, popunjavaju se polja koja opisuju zadatke i dozvoljava se kucanje i slanje zadataka
-    void ContestantLeftContest(qint32 ID);                 //neki drugi takmičar napustio takmičenje, šalje se indeks tog takmičara (u listi koja će se nalaziti na ekranu)
-    void ContestantScoreUpdated(qint32 ID, qint32 score);  //ažuriraju se poeni nekog igrača, može biti i sam korisnik
+    void UpdatedContestants();                          //treba da se ažurira lista korisnika
 
     //u vezi sa rešenjem zadatka
     void SolutionStatusUpdated(const QString& message); //status trenutno poslatog rešenja je ažuriran, treba da se prikaže poruka
